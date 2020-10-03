@@ -3,6 +3,7 @@ package etcdv3
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"net"
 	"strings"
 	"time"
@@ -17,6 +18,8 @@ var Deregister = make(chan struct{})
 func Register(target, service, host, port string, interval time.Duration, ttl int) error {
 	serviceValue := net.JoinHostPort(host, port)
 	serviceKey := fmt.Sprintf("/%s/%s/%s", schema, service, serviceValue)
+
+	logrus.Infof("key :  %s\n", serviceKey)
 
 	// get endpoints for register dial address
 	var err error

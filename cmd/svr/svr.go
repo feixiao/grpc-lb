@@ -31,6 +31,7 @@ func main() {
 		panic(err)
 	}
 
+	// 注册服务，服务路径 /etcdv3_resolver/hello_service/localhost:50001
 	err = grpclb.Register(*reg, *serv, *host, *port, time.Second*10, 15)
 	if err != nil {
 		panic(err)
@@ -41,11 +42,13 @@ func main() {
 	go func() {
 		s := <-ch
 		logrus.Infof("receive signal '%v'", s)
-		grpclb.UnRegister()
+		grpclb.UnRegister() // 注销服务
 		os.Exit(1)
 	}()
 
 	logrus.Infof("starting hello service at %s", *port)
+
+	// 开启服务
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
 	s.Serve(lis)
