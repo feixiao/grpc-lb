@@ -14,8 +14,8 @@ const schema = "etcdv3_resolver"
 
 // resolver is the implementaion of grpc.resolve.Builder
 type Resolver struct {
-	target  string
-	service string
+	target  string // etcd地址
+	service string // 服务名字
 	cli     *clientv3.Client
 	cc      resolver.ClientConn
 }
@@ -53,6 +53,7 @@ func (r *Resolver) Build(target resolver.Target, cc resolver.ClientConn, opts re
 
 	r.cc = cc
 
+	// 观察服务变化
 	go r.watch(fmt.Sprintf("/%s/%s/", schema, r.service))
 
 	return r, nil
@@ -61,6 +62,7 @@ func (r *Resolver) Build(target resolver.Target, cc resolver.ClientConn, opts re
 func (r *Resolver) watch(prefix string) {
 	addrDict := make(map[string]resolver.Address)
 
+	// 刷新连接
 	update := func() {
 		addrList := make([]resolver.Address, 0, len(addrDict))
 		for _, v := range addrDict {

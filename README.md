@@ -42,12 +42,12 @@
     *注: golang1.11以上版本进行测试*
 
     # 分别启动服务端
-    go run -mod vendor cmd/svr/svr.go -port 50001
-    go run -mod vendor cmd/svr/svr.go -port 50002
-    go run -mod vendor cmd/svr/svr.go -port 50003
+    go run cmd/svr/svr.go -port 50001
+    go run cmd/svr/svr.go -port 50002
+    go run cmd/svr/svr.go -port 50003
 
     # 启动客户端
-    go run -mod vendor cmd/cli/cli.go
+    go run cmd/cli/cli.go
 
 
     # 启动grpc-gateway代理，提供HTTP-RESTful服务
