@@ -1,19 +1,27 @@
 
 [![Build Status](https://travis-ci.org/wwcd/grpc-lb.svg?branch=master)](https://travis-ci.org/wwcd/grpc-lb)
 
-# 说明
+### 说明
 
 [gRPC服务发现&负载均衡](https://segmentfault.com/a/1190000008672912)中的例子, 修订如下
-
 - register中重复PUT, watch时没有释放导致的内存泄漏
 - 退出时不能正常unregister
 - 接收到etcd的delete事件时，未删除数据[#1](https://github.com/wwcd/grpc-lb/issues/1)
 - 使用resolver包替换naming包，此包状态已变为Deprecated
 - 增加[grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)例子
 
-# 测试
+### 详细说明
+#### 服务注册
+```shell script
+注册key:
+/etcd_v3/hello_service/localhost:50001
+关注key:
+/etcd_v3/hello_service
+```
 
-## 启动ETCD
+
+### 测试
+#### 启动ETCD
 
 	# https://coreos.com/etcd/docs/latest/op-guide/container.html#docker
 
@@ -37,7 +45,7 @@
 	  --advertise-client-urls http://${NODE1}:2379 --listen-client-urls http://0.0.0.0:2379 \
 	  --initial-cluster node1=http://${NODE1}:2380
 
-## 启动测试程序
+### 启动测试程序
 
     *注: golang1.11以上版本进行测试*
 

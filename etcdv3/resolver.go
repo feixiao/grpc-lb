@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/resolver"
 )
 
-const schema = "etcdv3_resolver"
+const schema = "etcd_v3"
 
 // resolver is the implementaion of grpc.resolve.Builder
 type Resolver struct {
@@ -57,6 +57,7 @@ func (r *Resolver) Build(target resolver.Target, cc resolver.ClientConn, opts re
 	r.cc = cc
 
 	// 观察服务变化
+	// 关注key为/etcd_v3/hello_service/
 	go r.watch(fmt.Sprintf("/%s/%s/", schema, r.service))
 
 	return r, nil
@@ -81,6 +82,7 @@ func (r *Resolver) watch(prefix string) {
 		}
 	}
 
+	// 更新还存在的节点信息
 	update()
 
 	rch := r.cli.Watch(context.Background(), prefix, clientv3.WithPrefix(), clientv3.WithPrevKV())
