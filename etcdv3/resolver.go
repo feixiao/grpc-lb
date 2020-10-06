@@ -3,6 +3,7 @@ package etcdv3
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"strings"
 
 	"github.com/coreos/etcd/clientv3"
@@ -42,6 +43,8 @@ func (r *Resolver) Close() {
 
 // Build to resolver.Resolver
 func (r *Resolver) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
+	logrus.Infof("target : %v", target)
+
 	var err error
 
 	r.cli, err = clientv3.New(clientv3.Config{

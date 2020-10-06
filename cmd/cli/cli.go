@@ -34,6 +34,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	// https://github.com/grpc/grpc/blob/master/doc/naming.md
 	// The gRPC client library will use the specified scheme to pick the right resolver plugin and pass it the fully qualified name string.
+	// r.Scheme很重要
 	conn, err := grpc.DialContext(ctx, r.Scheme()+"://authority/"+*svc, grpc.WithInsecure(), grpc.WithBalancerName(roundrobin.Name), grpc.WithBlock())
 
 	// etcdv3_resolver://authority/hello_service
